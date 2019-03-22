@@ -22,7 +22,7 @@ METHOD=`{push|pull}`
 
 OPTION is the options of rsync. See man rsync. It only supports one parameter now. If option is not defined, it will use `-avhP` by default.
 
-You have to setting the `$SYNC_FILE` in ~/.syncpath or .syncpath. The file in current directory will be used by default. 
+You have to set the `$SYNC_FILE` in ~/.syncpath or .syncpath. The file in current directory will be used by default. 
 
 example: 
 
