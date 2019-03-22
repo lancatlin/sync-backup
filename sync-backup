@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# A tool for backup files by setting variable, a wrapper of Rsync
+# Author: Wancat
+# Using:
+# sync-backup METHOD FILE OPTION
+# METHOD={push|pull}
+# OPTION is the options of rsync. See man rsync. It only supports one parameter now.
+# You have to setting the SYNC_FILE in ~/.syncpath or .syncpath. The file in current directory will be used by default.
+# example: 
+# SYNC_PATH="foo:/home/user/Documents/"
+
+FILE_NAME=".syncpath"
+METHOD=$1
+FILE=$2
+OPTION=$3
+# Load $SYNC_PATH
+if [ -f $FILE_NAME ]
+then
+	source $FILE_NAME
+elif [ -f ~/$FILE_NAME ]
+then	
+	source ~/$FILE_NAME
+else
+	echo ".syncpath file not found, exit..."
+	exit
+fi
+set -u
+echo "Sync Path: $SYNC_PATH"
+echo "File Name: $FILE"
+# start syncing
+if [ $METHOD = "push" ] ; then
+	rsync ${OPTION:--avhP} "$FILE" "$SYNC_PATH/"
+elif [ $METHOD = "pull" ]; then
+	rsync ${OPTION:--avhP} "$SYNC_PATH/'$FILE'" .
+fi
+
+
